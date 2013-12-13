@@ -123,7 +123,7 @@ icon=icon:calendar_view_month</parameters>
 
 #set($task_status = 'to_do')
 #set($task_priority = 'medium')
-#set($task_reporter = $context.user)
+#set($task_reporter = $xcontext.user)
 
 {{html}}
 &lt;form id="task-create" method="GET" action="$xwiki.getURL('TaskCode.TaskEdit')"&gt;
