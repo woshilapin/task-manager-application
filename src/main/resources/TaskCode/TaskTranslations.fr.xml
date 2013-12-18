@@ -21,7 +21,7 @@
   <comment/>
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
-  <hidden>false</hidden>
+  <hidden>true</hidden>
   <content>Tasks.WebHome.title = Gestionnaire de tâches
 Tasks.WebHome.add_a_new_task = Ajouter une tâche
 Tasks.WebHome.list_of_tasks = Liste des tâches
