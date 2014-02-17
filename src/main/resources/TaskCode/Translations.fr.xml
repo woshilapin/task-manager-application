@@ -2,7 +2,7 @@
 
 <xwikidoc>
   <web>TaskCode</web>
-  <name>TaskTranslations</name>
+  <name>Translations</name>
   <language>fr</language>
   <defaultLanguage/>
   <translation>1</translation>
@@ -11,9 +11,9 @@
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <creationDate>1386236501000</creationDate>
-  <date>1386236501000</date>
-  <contentUpdateDate>1386236501000</contentUpdateDate>
+  <creationDate>1392320100000</creationDate>
+  <date>1392636059000</date>
+  <contentUpdateDate>1392636057000</contentUpdateDate>
   <version>1.1</version>
   <title/>
   <defaultTemplate/>
@@ -26,21 +26,14 @@
 Tasks.WebHome.add_a_new_task = Ajouter une tâche
 Tasks.WebHome.list_of_tasks = Liste des tâches
 
-Tasks.TaskSheet.modify_the_task = Modifier la tâche
-Tasks.TaskSheet.need_to_be_logged = Vous devez être identifié pour voir cette page.
-Tasks.TaskSheet.this_page_is_not_a_task = Cette page n''est pas une tâche. Voir {0} pour les tâches existantes.
-
-Tasks.TaskEdit.edit_your_task = Édition de votre tâche
-Tasks.TaskEdit.save_modifications = Sauvegarder les modifications
-Tasks.TaskEdit.name_is_mandatory = 'Nom' est un champ requis
-
+TaskCode.TaskClass_defaultname = Pas de titre
 TaskCode.TaskClass_name = Nom
 TaskCode.TaskClass_description = Description
 TaskCode.TaskClass_duedate = Échéance
 TaskCode.TaskClass_duedate_format = E dd MMM yyyy HH:mm
 TaskCode.TaskClass_status = Statut
-TaskCode.TaskClass_status_to_do = À faire
-TaskCode.TaskClass_status_in_progress = En cours
+TaskCode.TaskClass_status_todo = À faire
+TaskCode.TaskClass_status_inprogress = En cours
 TaskCode.TaskClass_status_done = Fait
 TaskCode.TaskClass_priority = Priorité
 TaskCode.TaskClass_priority_high = Haute
@@ -49,19 +42,12 @@ TaskCode.TaskClass_priority_low = Basse
 TaskCode.TaskClass_reporter = Créateur
 TaskCode.TaskClass_assignee = Destinataire
 
-TaskCode.StatusClass_name_to_do = À faire
-TaskCode.StatusClass_name_in_progress = En cours
-TaskCode.StatusClass_name_done = Fait
-
-TaskCode.PriorityClass_name_high = Haute
-TaskCode.PriorityClass_name_medium = Moyenne
-TaskCode.PriorityClass_name_low = Basse
-
 TaskCode.TaskPanel_title = Gestionnaire de tâches
 
 tasks.panel.title = Mes tâches
 tasks.panel.noactivetask = Aucune tâche à venir
 
+task.livetable.emptyvalue = Pas de titre
 task.livetable.name = Nom de la tâche
 task.livetable.status = Statut
 task.livetable.priority = Priorité

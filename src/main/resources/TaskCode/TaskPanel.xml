@@ -11,9 +11,9 @@
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <creationDate>1386236501000</creationDate>
-  <date>1386236501000</date>
-  <contentUpdateDate>1386236501000</contentUpdateDate>
+  <creationDate>1392200529000</creationDate>
+  <date>1392636110000</date>
+  <contentUpdateDate>1392200529000</contentUpdateDate>
   <version>1.1</version>
   <title/>
   <defaultTemplate/>
@@ -113,7 +113,7 @@
   ; [[$task.getProperty('name').getValue()&gt;&gt;$task_document]]
   : $datetool.format($services.localization.render('TaskCode.TaskClass_duedate_format'), $task.getProperty('duedate').getValue())
 #end
-#if($results.size() == 0)
+#if($query_results.isEmpty())
   * $services.localization.render('tasks.panel.noactivetask')
 #end
 #panelfooter()

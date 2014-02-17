@@ -11,252 +11,39 @@
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <creationDate>1386236501000</creationDate>
-  <date>1386236501000</date>
-  <contentUpdateDate>1386236501000</contentUpdateDate>
+  <creationDate>1392201282000</creationDate>
+  <date>1392634633000</date>
+  <contentUpdateDate>1392634633000</contentUpdateDate>
   <version>1.1</version>
-  <title/>
+  <title>#if($doc.name == 'TaskSheet')Task Sheet#{else}$services.display.title($doc, {'displayerHint': 'default'})#end</title>
   <defaultTemplate/>
   <validationScript/>
   <comment/>
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
-  <hidden>true</hidden>
-  <attachment>
-    <filename>imagemagick-priority.sh</filename>
-    <filesize>2100</filesize>
-    <author>XWiki.Admin</author>
-    <date>1384792690000</date>
-    <version>1.1</version>
-    <comment/>
-    <content>Y29udmVydCBcCgktc2l6ZSAyNTZ4MjU2IFwKCXhjOm5vbmUgXAoJLWZpbGwgYmxhY2sgXAoJLWRy
-YXcgJ2NpcmNsZSAxMjcsMTI3IDAsMTI3JyBcCglwcmlvcml0eV9ib3JkZXIucG5nCgpjb252ZXJ0
-IFwKCS1zaXplIDMwMHgzMDAgXAoJeGM6bm9uZSBcCgktZmlsbCB3aGl0ZSBcCgktZHJhdyAnY2ly
-Y2xlIDE0OSwxNDkgMjQsMTQ5JyBcCglwcmlvcml0eV9tYXNrLnBuZwoKIyBISUdICmNvbnZlcnQg
-XAoJcHJpb3JpdHlfbWFzay5wbmcgXAoJLWJhY2tncm91bmQgcmVkIFwKCS1hbHBoYSBzaGFwZSBc
-Cglwcmlvcml0eV9oaWdoX2NvbG9yLnBuZwpjb252ZXJ0IFwKCXByaW9yaXR5X2hpZ2hfY29sb3Iu
-cG5nIFwKCS1hbHBoYSBleHRyYWN0IFwKCS1ibHVyIDB4MTYgXAoJLXNoYWRlIDExMHgzMCBcCgkt
-bm9ybWFsaXplIFwKCXByaW9yaXR5X2hpZ2hfY29sb3IucG5nIFwKCS1jb21wb3NlIE92ZXJsYXkg
-XAoJLWNvbXBvc2l0ZSBcCglwcmlvcml0eV9oaWdoX2NvbG9yLnBuZyBcCgktYWxwaGEgb24gXAoJ
-LWNvbXBvc2UgRHN0X0luIFwKCS1jb21wb3NpdGUgXAoJLWNyb3AgMjU2eDI1NisyMisyMiEgXAoJ
-cHJpb3JpdHlfaGlnaF9idXR0b24ucG5nCmNvbnZlcnQgXAoJcHJpb3JpdHlfYm9yZGVyLnBuZyBc
-Cglwcmlvcml0eV9oaWdoX2J1dHRvbi5wbmcgXAoJLWNvbXBvc2UgU3JjX092ZXIgXAoJLWNvbXBv
-c2l0ZSBcCglwcmlvcml0eS1oaWdoLnBuZwpjb252ZXJ0IFwKCXByaW9yaXR5LWhpZ2gucG5nIFwK
-CS1ib3JkZXJjb2xvciBOb25lIFwKCS1ib3JkZXIgNHg0IFwKCS1maWx0ZXIgTWl0Y2hlbGwgXAoJ
-LXJlc2l6ZSAzMngzMiBcCglwcmlvcml0eS1oaWdoXzMyLnBuZwoKIyBNRURJVU0KY29udmVydCBc
-Cglwcmlvcml0eV9tYXNrLnBuZyBcCgktYmFja2dyb3VuZCBvcmFuZ2UgXAoJLWFscGhhIHNoYXBl
-IFwKCXByaW9yaXR5X21lZGl1bV9jb2xvci5wbmcKY29udmVydCBcCglwcmlvcml0eV9tZWRpdW1f
-Y29sb3IucG5nIFwKCS1hbHBoYSBleHRyYWN0IFwKCS1ibHVyIDB4MTYgXAoJLXNoYWRlIDExMHgz
-MCBcCgktbm9ybWFsaXplIFwKCXByaW9yaXR5X21lZGl1bV9jb2xvci5wbmcgXAoJLWNvbXBvc2Ug
-T3ZlcmxheSBcCgktY29tcG9zaXRlIFwKCXByaW9yaXR5X21lZGl1bV9jb2xvci5wbmcgXAoJLWFs
-cGhhIG9uIFwKCS1jb21wb3NlIERzdF9JbiBcCgktY29tcG9zaXRlIFwKCS1jcm9wIDI1NngyNTYr
-MjIrMjIhIFwKCXByaW9yaXR5X21lZGl1bV9idXR0b24ucG5nCmNvbnZlcnQgXAoJcHJpb3JpdHlf
-Ym9yZGVyLnBuZyBcCglwcmlvcml0eV9tZWRpdW1fYnV0dG9uLnBuZyBcCgktY29tcG9zZSBTcmNf
-T3ZlciBcCgktY29tcG9zaXRlIFwKCXByaW9yaXR5LW1lZGl1bS5wbmcKY29udmVydCBcCglwcmlv
-cml0eS1tZWRpdW0ucG5nIFwKCS1ib3JkZXJjb2xvciBOb25lIFwKCS1ib3JkZXIgNHg0IFwKCS1m
-aWx0ZXIgTWl0Y2hlbGwgXAoJLXJlc2l6ZSAzMngzMiBcCglwcmlvcml0eS1tZWRpdW1fMzIucG5n
-CgojIExPVwpjb252ZXJ0IFwKCXByaW9yaXR5X21hc2sucG5nIFwKCS1iYWNrZ3JvdW5kIHllbGxv
-dyBcCgktYWxwaGEgc2hhcGUgXAoJcHJpb3JpdHlfbG93X2NvbG9yLnBuZwpjb252ZXJ0IFwKCXBy
-aW9yaXR5X2xvd19jb2xvci5wbmcgXAoJLWFscGhhIGV4dHJhY3QgXAoJLWJsdXIgMHgxNiBcCgkt
-c2hhZGUgMTEweDMwIFwKCS1ub3JtYWxpemUgXAoJcHJpb3JpdHlfbG93X2NvbG9yLnBuZyBcCgkt
-Y29tcG9zZSBPdmVybGF5IFwKCS1jb21wb3NpdGUgXAoJcHJpb3JpdHlfbG93X2NvbG9yLnBuZyBc
-CgktYWxwaGEgb24gXAoJLWNvbXBvc2UgRHN0X0luIFwKCS1jb21wb3NpdGUgXAoJLWNyb3AgMjU2
-eDI1NisyMisyMiEgXAoJcHJpb3JpdHlfbG93X2J1dHRvbi5wbmcKY29udmVydCBcCglwcmlvcml0
-eV9ib3JkZXIucG5nIFwKCXByaW9yaXR5X2xvd19idXR0b24ucG5nIFwKCS1jb21wb3NlIFNyY19P
-dmVyIFwKCS1jb21wb3NpdGUgXAoJcHJpb3JpdHktbG93LnBuZwpjb252ZXJ0IFwKCXByaW9yaXR5
-LWxvdy5wbmcgXAoJLWJvcmRlcmNvbG9yIE5vbmUgXAoJLWJvcmRlciA0eDQgXAoJLWZpbHRlciBN
-aXRjaGVsbCBcCgktcmVzaXplIDMyeDMyIFwKCXByaW9yaXR5LWxvd18zMi5wbmcK
-</content>
-  </attachment>
-  <object>
-    <class>
-      <name>XWiki.StyleSheetExtension</name>
-      <customClass/>
-      <customMapping/>
-      <defaultViewSheet/>
-      <defaultEditSheet/>
-      <defaultWeb/>
-      <nameField/>
-      <validationScript/>
-      <cache>
-        <cache>0</cache>
-        <disabled>0</disabled>
-        <displayType>select</displayType>
-        <multiSelect>0</multiSelect>
-        <name>cache</name>
-        <number>5</number>
-        <prettyName>Caching policy</prettyName>
-        <relationalStorage>0</relationalStorage>
-        <separator> </separator>
-        <separators> ,|</separators>
-        <size>1</size>
-        <unmodifiable>0</unmodifiable>
-        <values>long|short|default|forbid</values>
-        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
-      </cache>
-      <code>
-        <disabled>0</disabled>
-        <name>code</name>
-        <number>2</number>
-        <prettyName>Code</prettyName>
-        <rows>20</rows>
-        <size>50</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
-      </code>
-      <name>
-        <disabled>0</disabled>
-        <name>name</name>
-        <number>1</number>
-        <prettyName>Name</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </name>
-      <parse>
-        <disabled>0</disabled>
-        <displayFormType>select</displayFormType>
-        <displayType>yesno</displayType>
-        <name>parse</name>
-        <number>4</number>
-        <prettyName>Parse content</prettyName>
-        <unmodifiable>0</unmodifiable>
-        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
-      </parse>
-      <use>
-        <cache>0</cache>
-        <disabled>0</disabled>
-        <displayType>select</displayType>
-        <multiSelect>0</multiSelect>
-        <name>use</name>
-        <number>3</number>
-        <prettyName>Use this extension</prettyName>
-        <relationalStorage>0</relationalStorage>
-        <separator> </separator>
-        <separators> ,|</separators>
-        <size>1</size>
-        <unmodifiable>0</unmodifiable>
-        <values>currentPage=Always on this page|onDemand=On demand|always=Always on this wiki</values>
-        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
-      </use>
-    </class>
-    <name>TaskCode.TaskSheet</name>
-    <number>0</number>
-    <className>XWiki.StyleSheetExtension</className>
-    <guid>eddd13a4-bb44-4ea7-a387-81cfae399f41</guid>
-    <property>
-      <cache>default</cache>
-    </property>
-    <property>
-      <code>#task-details {
-  float: right;
-  min-width: 250px;
-  background-color: rgb(243,243,243);
-  border-style: solid;
-  border-width: 1px;
-  border-color: gray;
-}
-#task-details label {
-  font-weight: bold;
-  font-variant: small-caps;
-}</code>
-    </property>
-    <property>
-      <name>Task style</name>
-    </property>
-    <property>
-      <parse>0</parse>
-    </property>
-    <property>
-      <use>always</use>
-    </property>
-  </object>
+  <hidden>false</hidden>
   <content>{{velocity}}
-#set($taskClass = $doc.getObject('TaskCode.TaskClass', 0))
+## You can modify this page to customize the presentation of your object.
+## At first you should keep the default presentation and just save the document.
 
-#if($isGuest)
-  {{info}}
-    $services.localization.render('Tasks.TaskSheet.need_to_be_logged')
-  {{/info}}
-#elseif(!$taskClass)
-  {{warning}}
-    $services.localization.render('Tasks.TaskSheet.this_page_is_not_a_task', ["[[$services.localization.render('Tasks.WebHome.list_of_tasks')&gt;&gt;Tasks.WebHome]]"])
-  {{/warning}}
-#else
-  #set($task_id = $taskClass.getProperty('id').getValue())
-  #set($task_name = $taskClass.getProperty('name').getValue())
-  #set($task_description = $taskClass.getProperty('description').getValue())
-  #set($task_duedate = $taskClass.getProperty('duedate').getValue())
-  #set($task_status = $taskClass.getProperty('status').getValue())
-  #set($task_priority = $taskClass.getProperty('priority').getValue())
-  #set($task_reporter = $taskClass.getProperty('reporter').getValue())
-  #set($task_assignee = $taskClass.getProperty('assignee').getValue())
+#set($toDisplay = [])
+#set($discard = $toDisplay.add('name'))
+#set($discard = $toDisplay.add('duedate'))
+#set($discard = $toDisplay.add('status'))
+#set($discard = $toDisplay.add('priority'))
+#set($discard = $toDisplay.add('reporter'))
+#set($discard = $toDisplay.add('assignee'))
+#set($discard = $toDisplay.add('dependencies'))
+#set($discard = $toDisplay.add('tags'))
+#set($discard = $toDisplay.add('description'))
 
-  #set($task_status_l10n_id = 'TaskCode.StatusClass_name_' + $task_status)
-  #set($task_status_l10n = $services.localization.render( $task_status_l10n_id))
-  #set($task_priority_l10n_id = 'TaskCode.PriorityClass_name_' + $task_priority)
-  #set($task_priority_l10n = $services.localization.render( $task_priority_l10n_id))
-  #set($xwql_query = "select priority.icon from Document doc, doc.object(TaskCode.PriorityClass) as priority where priority.name = '" + $task_priority + "'")
-  #set($queryResult = $services.query.xwql($xwql_query).execute())
-  #set($task_priority_image = '[[image:icon:' + $queryResult.get(0) + ']]')
-
-  {{html wiki="true"}}
-    &lt;div id="task-details"&gt;
-      &lt;div id="task-details-reporters"&gt;
-        &lt;label&gt;Reporter&lt;/label&gt;$taskClass.get('reporter')
-      &lt;/div&gt;
-      &lt;div id="task-details-assignees"&gt;
-        &lt;label&gt;Assignee&lt;/label&gt;$taskClass.get('assignee')
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;table&gt;
-      &lt;tr&gt;
-        &lt;th&gt;
-          $services.localization.render('TaskCode.TaskClass_duedate')
-        &lt;/th&gt;
-        &lt;td&gt;
-          $datetool.format($services.localization.render('TaskCode.TaskClass_duedate_format'), $task_duedate)
-        &lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;th&gt;
-          $services.localization.render('TaskCode.TaskClass_status')
-        &lt;/th&gt;
-        &lt;td&gt;
-          $task_status_l10n
-        &lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;th&gt;
-          $services.localization.render('TaskCode.TaskClass_priority')
-        &lt;/th&gt;
-        &lt;td&gt;
-          $task_priority_image $task_priority_l10n
-        &lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;th&gt;
-          $services.localization.render('TaskCode.TaskClass_description')
-        &lt;/th&gt;
-        &lt;td&gt;
-          &lt;p&gt;$task_description&lt;/p&gt;
-        &lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/table&gt;
-    &lt;form id="task-edit" method="POST" action="$xwiki.getURL('TaskCode.TaskEdit')"&gt;
-      &lt;input type="hidden" form="task-edit" name="TaskCode.TaskClass_is_edit" value="true" /&gt;
-      &lt;input type="hidden" form="task-edit" name="TaskCode.TaskClass_0_id" value="$task_id" /&gt;
-      &lt;input type="hidden" form="task-edit" name="TaskCode.TaskClass_0_name" value="$task_name" /&gt;
-      &lt;input type="hidden" form="task-edit" name="TaskCode.TaskClass_0_description" value="$task_description" /&gt;
-      &lt;input type="hidden" form="task-edit" name="TaskCode.TaskClass_0_duedate" value="$task_duedate" /&gt;
-      &lt;input type="hidden" form="task-edit" name="TaskCode.TaskClass_0_status" value="$task_status" /&gt;
-      &lt;input type="hidden" form="task-edit" name="TaskCode.TaskClass_0_priority" value="$task_priority" /&gt;
-      &lt;input type="hidden" form="task-edit" name="TaskCode.TaskClass_0_reporter" value="$task_reporter" /&gt;
-      &lt;input type="hidden" form="task-edit" name="TaskCode.TaskClass_0_assignee" value="$task_assignee" /&gt;
-      &lt;input type="submit" form="task-edit" class="button" value="$services.localization.render('Tasks.TaskSheet.modify_the_task')" /&gt;
-    &lt;/form&gt;
-  {{/html}}
-
+#set($taskObj = $doc.getObject('TaskCode.TaskClass').xWikiClass)
+(% class="xform" %)(((
+#foreach($propName in $toDisplay)
+  ; $taskObj.get($propName).prettyName
+  : $doc.display($propName)
 #end
+)))
+
 {{/velocity}}</content>
 </xwikidoc>

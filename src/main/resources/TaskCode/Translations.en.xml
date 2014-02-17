@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xwikidoc>
+  <web>TaskCode</web>
+  <name>Translations</name>
+  <language>en</language>
+  <defaultLanguage/>
+  <translation>1</translation>
+  <parent/>
+  <creator>xwiki:XWiki.Admin</creator>
+  <author>xwiki:XWiki.Admin</author>
+  <customClass/>
+  <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
+  <creationDate>1392634746000</creationDate>
+  <date>1392636114000</date>
+  <contentUpdateDate>1392636063000</contentUpdateDate>
+  <version>1.1</version>
+  <title/>
+  <defaultTemplate/>
+  <validationScript/>
+  <comment/>
+  <minorEdit>false</minorEdit>
+  <syntaxId>xwiki/2.1</syntaxId>
+  <hidden>true</hidden>
+  <content>Tasks.WebHome.title = Task manager
+Tasks.WebHome.add_a_new_task = Add a new task
+Tasks.WebHome.list_of_tasks = List of tasks
+
+TaskCode.TaskClass_defaultname = No title
+TaskCode.TaskClass_name = Name
+TaskCode.TaskClass_description = Description
+TaskCode.TaskClass_duedate = Due date
+TaskCode.TaskClass_duedate_format = E dd MMM yyyy HH:mm
+TaskCode.TaskClass_status = Status
+TaskCode.TaskClass_status_todo = To do
+TaskCode.TaskClass_status_inprogress = In progress
+TaskCode.TaskClass_status_done = Done
+TaskCode.TaskClass_priority = Priority
+TaskCode.TaskClass_priority_high = High
+TaskCode.TaskClass_priority_medium = Medium
+TaskCode.TaskClass_priority_low = Low
+TaskCode.TaskClass_reporter = Reporter
+TaskCode.TaskClass_assignee = Assignee
+
+TaskCode.TaskPanel_title = Task manager
+
+tasks.panel.title = My tasks
+tasks.panel.noactivetask = No task coming
+
+task.livetable.emptyvalue = No task title
+task.livetable.name = Task name
+task.livetable.status = Status
+task.livetable.priority = Priority
+task.livetable.reporter = Reported by
+task.livetable.assignee = Assigned to
+task.livetable._actions = Actions</content>
+</xwikidoc>

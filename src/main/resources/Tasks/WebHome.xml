@@ -11,9 +11,9 @@
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <creationDate>1386236501000</creationDate>
-  <date>1386236501000</date>
-  <contentUpdateDate>1386236501000</contentUpdateDate>
+  <creationDate>1392200529000</creationDate>
+  <date>1392636510000</date>
+  <contentUpdateDate>1392629338000</contentUpdateDate>
   <version>1.1</version>
   <title/>
   <defaultTemplate/>
@@ -112,28 +112,13 @@ icon=icon:calendar_view_month</parameters>
   <content>= {{translation key="Tasks.WebHome.title" /}} =
 
 {{velocity}}
-#set($query = "select max(task.id) from Document doc, doc.object(TaskCode.TaskClass) as task")
-#set($query_result = $services.query.xwql($query).execute())
-#if (($query_result.get(0)) &amp;&amp; ($!result.get(0) != ""))
-  #set($max_id = $query_result.get(0))
-#else
-  #set($max_id = 0)
-#end
-#set($task_id = $mathtool.add($max_id, 1))
-
-#set($task_status = 'to_do')
-#set($task_priority = 'medium')
-#set($task_reporter = $xcontext.user)
+#set($taskName = $xwiki.getUniquePageName('Tasks', 'Task'))
+#set($taskURL = $xwiki.getURL($taskName, 'edit'))
 
 {{html}}
-&lt;form id="task-create" method="GET" action="$xwiki.getURL('TaskCode.TaskEdit')"&gt;
-  &lt;input type="hidden" form="task-create" name="TaskCode.TaskClass_is_new" value="true" /&gt;
-  &lt;input type="hidden" form="task-create" name="TaskCode.TaskClass_is_edit" value="false" /&gt;
-  &lt;input type="hidden" form="task-create" name="TaskCode.TaskClass_is_save" value="false" /&gt;
-  &lt;input type="hidden" form="task-create" name="TaskCode.TaskClass_0_id" value="$task_id" /&gt;
-  &lt;input type="hidden" form="task-create" name="TaskCode.TaskClass_0_status" value="$task_status" /&gt;
-  &lt;input type="hidden" form="task-create" name="TaskCode.TaskClass_0_priority" value="$task_priority" /&gt;
-  &lt;input type="hidden" form="task-create" name="TaskCode.TaskClass_0_reporter" value="$task_reporter" /&gt;
+&lt;form id="task-create" method="GET" action="$taskURL"&gt;
+  &lt;input type="hidden" id="template" name="template" value="TaskCode.TaskTemplate" /&gt;
+  &lt;input type="hidden" id="TaskCode.TaskClass_0_reporter" name="TaskCode.TaskClass_0_reporter" value="$xcontext.user" /&gt;
   &lt;input type="submit" form="task-create" class="button" value="$services.localization.render('Tasks.WebHome.add_a_new_task')" /&gt;
 &lt;/form&gt;
 {{/html}}
