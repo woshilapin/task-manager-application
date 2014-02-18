@@ -33,8 +33,6 @@
 #set($discard = $toDisplay.add('priority'))
 #set($discard = $toDisplay.add('reporter'))
 #set($discard = $toDisplay.add('assignee'))
-#set($discard = $toDisplay.add('dependencies'))
-#set($discard = $toDisplay.add('tags'))
 #set($discard = $toDisplay.add('description'))
 
 #set($taskObj = $doc.getObject('TaskCode.TaskClass').xWikiClass)

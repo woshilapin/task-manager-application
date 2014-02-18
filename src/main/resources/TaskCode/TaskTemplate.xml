@@ -53,30 +53,6 @@
         <validationRegExp/>
         <classType>com.xpn.xwiki.objects.classes.UsersClass</classType>
       </assignee>
-      <dependencies>
-        <cache>0</cache>
-        <classname/>
-        <customDisplay/>
-        <disabled>0</disabled>
-        <displayType>input</displayType>
-        <idField/>
-        <multiSelect>1</multiSelect>
-        <name>dependencies</name>
-        <number>8</number>
-        <picker>1</picker>
-        <prettyName>Dependencies</prettyName>
-        <relationalStorage>1</relationalStorage>
-        <separator>, </separator>
-        <separators>,</separators>
-        <size>1</size>
-        <sort>value</sort>
-        <sql>select prop.value from BaseObject as obj, StringProperty as prop where obj.className='TaskCode.TaskClass' and obj.name &lt;&gt; 'TaskCode.TaskTemplate' and prop.id.id = obj.id and prop.id.name='title'</sql>
-        <unmodifiable>0</unmodifiable>
-        <validationMessage/>
-        <validationRegExp/>
-        <valueField/>
-        <classType>com.xpn.xwiki.objects.classes.DBListClass</classType>
-      </dependencies>
       <description>
         <customDisplay/>
         <disabled>0</disabled>
@@ -170,19 +146,6 @@
         <values>todo=To do|inprogress=In progress|done=Done</values>
         <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
       </status>
-      <tags>
-        <customDisplay/>
-        <disabled>0</disabled>
-        <name>tags</name>
-        <number>9</number>
-        <picker>0</picker>
-        <prettyName>Tags</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <validationMessage/>
-        <validationRegExp/>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </tags>
       <title>
         <customDisplay/>
         <disabled>0</disabled>
@@ -205,13 +168,10 @@
       <assignee/>
     </property>
     <property>
-      <dependencies/>
-    </property>
-    <property>
       <description/>
     </property>
     <property>
-      <duedate />
+      <duedate/>
     </property>
     <property>
       <priority>medium</priority>
@@ -221,9 +181,6 @@
     </property>
     <property>
       <status>todo</status>
-    </property>
-    <property>
-      <tags/>
     </property>
     <property>
       <title/>
