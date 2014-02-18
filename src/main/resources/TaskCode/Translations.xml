@@ -61,7 +61,7 @@
 Tasks.WebHome.add_a_new_task = Add a new task
 Tasks.WebHome.list_of_tasks = List of tasks
 
-TaskCode.TaskClass_defaultname = No title
+TaskCode.TaskClass_defaulttitle = No title
 TaskCode.TaskClass_name = Name
 TaskCode.TaskClass_description = Description
 TaskCode.TaskClass_duedate = Due date
