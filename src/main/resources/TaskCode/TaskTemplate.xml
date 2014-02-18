@@ -11,9 +11,9 @@
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <creationDate>1392204389000</creationDate>
-  <date>1392636491000</date>
-  <contentUpdateDate>1392636163000</contentUpdateDate>
+  <creationDate>1392643347000</creationDate>
+  <date>1392722667000</date>
+  <contentUpdateDate>1392714508000</contentUpdateDate>
   <version>1.1</version>
   <title>#if($doc.getObject('TaskCode.TaskClass').getProperty('name').value)$doc.getObject('TaskCode.TaskClass').getProperty('name').value#else$services.localization.render('TaskCode.TaskClass_defaultname')#end</title>
   <defaultTemplate/>
@@ -21,7 +21,7 @@
   <comment/>
   <minorEdit>false</minorEdit>
   <syntaxId>xwiki/2.1</syntaxId>
-  <hidden>false</hidden>
+  <hidden>true</hidden>
   <object>
     <class>
       <name>TaskCode.TaskClass</name>
@@ -65,12 +65,12 @@
         <number>8</number>
         <picker>1</picker>
         <prettyName>Dependencies</prettyName>
-        <relationalStorage>0</relationalStorage>
-        <separator> </separator>
-        <separators/>
+        <relationalStorage>1</relationalStorage>
+        <separator>, </separator>
+        <separators>,</separators>
         <size>1</size>
-        <sort>id</sort>
-        <sql/>
+        <sort>value</sort>
+        <sql>select prop.value from BaseObject as obj, StringProperty as prop where obj.className='TaskCode.TaskClass' and obj.name &lt;&gt; 'TaskCode.TaskTemplate' and prop.id.id = obj.id and prop.id.name='title'</sql>
         <unmodifiable>0</unmodifiable>
         <validationMessage/>
         <validationRegExp/>
@@ -107,19 +107,6 @@
         <validationRegExp/>
         <classType>com.xpn.xwiki.objects.classes.DateClass</classType>
       </duedate>
-      <name>
-        <customDisplay/>
-        <disabled>0</disabled>
-        <name>name</name>
-        <number>2</number>
-        <picker>0</picker>
-        <prettyName>Name</prettyName>
-        <size>30</size>
-        <unmodifiable>0</unmodifiable>
-        <validationMessage/>
-        <validationRegExp/>
-        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
-      </name>
       <priority>
         <cache>0</cache>
         <customDisplay/>
@@ -196,6 +183,19 @@
         <validationRegExp/>
         <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
       </tags>
+      <title>
+        <customDisplay/>
+        <disabled>0</disabled>
+        <name>title</name>
+        <number>2</number>
+        <picker>0</picker>
+        <prettyName>Title</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <validationMessage/>
+        <validationRegExp/>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </title>
     </class>
     <name>TaskCode.TaskTemplate</name>
     <number>0</number>
@@ -211,10 +211,7 @@
       <description/>
     </property>
     <property>
-      <duedate>2014-02-17 12:28:11.596</duedate>
-    </property>
-    <property>
-      <name/>
+      <duedate>2014-02-17 12:28:00.0</duedate>
     </property>
     <property>
       <priority>medium</priority>
@@ -227,6 +224,9 @@
     </property>
     <property>
       <tags/>
+    </property>
+    <property>
+      <title/>
     </property>
   </object>
   <content/>
