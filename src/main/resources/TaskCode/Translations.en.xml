@@ -48,7 +48,7 @@ tasks.panel.title = My tasks
 tasks.panel.noactivetask = No task coming
 
 task.livetable.emptyvalue = No task title
-task.livetable.name = Task name
+task.livetable.title = Task name
 task.livetable.status = Status
 task.livetable.priority = Priority
 task.livetable.reporter = Reported by

@@ -48,7 +48,7 @@ tasks.panel.title = Mes tâches
 tasks.panel.noactivetask = Aucune tâche à venir
 
 task.livetable.emptyvalue = Pas de titre
-task.livetable.name = Nom de la tâche
+task.livetable.title = Nom de la tâche
 task.livetable.status = Statut
 task.livetable.priority = Priorité
 task.livetable.reporter = Créé par
