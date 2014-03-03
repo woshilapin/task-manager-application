@@ -11,9 +11,9 @@
   <author>xwiki:XWiki.Admin</author>
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
-  <creationDate>1392643346000</creationDate>
-  <date>1392721951000</date>
-  <contentUpdateDate>1392721951000</contentUpdateDate>
+  <creationDate>1393842590000</creationDate>
+  <date>1393852041000</date>
+  <contentUpdateDate>1393852041000</contentUpdateDate>
   <version>1.1</version>
   <title>TaskClass</title>
   <defaultTemplate/>
@@ -36,7 +36,7 @@
       <customDisplay/>
       <disabled>0</disabled>
       <displayType>input</displayType>
-      <multiSelect>0</multiSelect>
+      <multiSelect>1</multiSelect>
       <name>assignee</name>
       <number>7</number>
       <picker>1</picker>
@@ -66,7 +66,7 @@
       <prettyName>Dependencies</prettyName>
       <relationalStorage>1</relationalStorage>
       <separator>, </separator>
-      <separators>,</separators>
+      <separators>|</separators>
       <size>1</size>
       <sort>value</sort>
       <sql>select prop.value from BaseObject as obj, StringProperty as prop where obj.className='TaskCode.TaskClass' and obj.name &lt;&gt; 'TaskCode.TaskTemplate' and prop.id.id = obj.id and prop.id.name='title'</sql>
