@@ -12,8 +12,8 @@
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <creationDate>1393842590000</creationDate>
-  <date>1393948371000</date>
-  <contentUpdateDate>1393948289000</contentUpdateDate>
+  <date>1393951317000</date>
+  <contentUpdateDate>1393951306000</contentUpdateDate>
   <version>1.1</version>
   <title/>
   <defaultTemplate/>
@@ -36,6 +36,7 @@ TaskCode.TaskClass_status = Statut
 TaskCode.TaskClass_status_todo = À faire
 TaskCode.TaskClass_status_inprogress = En cours
 TaskCode.TaskClass_status_done = Fait
+TaskCode.TaskClass_status_late = En retard
 TaskCode.TaskClass_priority = Priorité
 TaskCode.TaskClass_priority_high = Haute
 TaskCode.TaskClass_priority_medium = Moyenne

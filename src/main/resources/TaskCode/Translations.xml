@@ -71,6 +71,7 @@ TaskCode.TaskClass_status = Status
 TaskCode.TaskClass_status_todo = To do
 TaskCode.TaskClass_status_inprogress = In progress
 TaskCode.TaskClass_status_done = Done
+TaskCode.TaskClass_status_late = Late
 TaskCode.TaskClass_priority = Priority
 TaskCode.TaskClass_priority_high = High
 TaskCode.TaskClass_priority_medium = Medium

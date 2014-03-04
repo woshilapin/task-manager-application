@@ -12,8 +12,8 @@
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <creationDate>1393842590000</creationDate>
-  <date>1393949505000</date>
-  <contentUpdateDate>1393948323000</contentUpdateDate>
+  <date>1393953777000</date>
+  <contentUpdateDate>1393953368000</contentUpdateDate>
   <version>1.1</version>
   <title/>
   <defaultTemplate/>
@@ -175,37 +175,48 @@
 .task-card-subtasks-status:hover .tooltip img {
   max-height: 5ex;
 }
-.task-card-subtasks-status-done {
-  background: green;
-}
-.task-card-subtasks-status-done .tooltip {
-  border-color: green;
-  box-shadow: 0.5em 0.5ex 0.5ex #E0FFE0;
-}
-.task-card-subtasks-status-done .tooltip::before {
-  content: "[$services.localization.render('TaskCode.TaskClass_status_done')] ";
-  color: green;
-}
-.task-card-subtasks-status-inprogress {
+.task-card-subtasks-status-late {
   background: red;
 }
-.task-card-subtasks-status-inprogress .tooltip {
+.task-card-subtasks-status-late .tooltip {
   border-color: red;
   box-shadow: 0.5em 0.5ex 0.5ex #FFE0E0;
 }
-.task-card-subtasks-status-inprogress .tooltip::before {
-  content: "[$services.localization.render('TaskCode.TaskClass_status_inprogress')] ";
+.task-card-subtasks-status-late .tooltip::before {
+  content: "[$services.localization.render('TaskCode.TaskClass_status_late')] ";
   color: red;
 }
 .task-card-subtasks-status-todo {
-  background: gray;
+  background: #2173AF;
 }
 .task-card-subtasks-status-todo .tooltip {
-  border-color: gray;
-  box-shadow: 0.5em 0.5ex 0.5ex #E0E0E0;
+  border-color: #2173AF;
+  box-shadow: 0.5em 0.5ex 0.5ex #71C3FF;
 }
 .task-card-subtasks-status-todo .tooltip::before {
   content: "[$services.localization.render('TaskCode.TaskClass_status_todo')] ";
+  color: #2173AF;
+}
+.task-card-subtasks-status-inprogress {
+  background: green;
+}
+.task-card-subtasks-status-inprogress .tooltip {
+  border-color: green;
+  box-shadow: 0.5em 0.5ex 0.5ex #E0FFE0;
+}
+.task-card-subtasks-status-inprogress .tooltip::before {
+  content: "[$services.localization.render('TaskCode.TaskClass_status_inprogress')] ";
+  color: green;
+}
+.task-card-subtasks-status-done {
+  background: gray;
+}
+.task-card-subtasks-status-done .tooltip {
+  border-color: gray;
+  box-shadow: 0.5em 0.5ex 0.5ex #E0E0E0;
+}
+.task-card-subtasks-status-done .tooltip::before {
+  content: "[$services.localization.render('TaskCode.TaskClass_status_done')] ";
   color: gray;
 }
 
@@ -387,6 +398,7 @@ icon=icon:calendar_view_month</parameters>
 #set($results = $services.query.xwql($query).execute())
 #macro(cardsStatus $task)
   #set($taskdependencies = $task.getProperty('dependencies').value)
+  #set($taskdeplate = [])
   #set($taskdeptodo = [])
   #set($taskdepinprogress = [])
   #set($taskdepdone = [])
@@ -395,7 +407,9 @@ icon=icon:calendar_view_month</parameters>
     #set($dtaskpage = $xwiki.getDocument($dtaskpageref))
     #set($dtask = $dtaskpage.getObject('TaskCode.TaskClass'))
     #set($dtaskstatus = $dtask.getProperty('status').value)
-    #if($dtaskstatus == 'todo')
+    #if($dtask.getProperty('duedate').value.before($datetool.date) &amp;&amp; $dtaskstatus != 'done')
+      #set($discard = $taskdeplate.add($dtask))
+    #elseif($dtaskstatus == 'todo')
       #set($discard = $taskdeptodo.add($dtask))
     #elseif($dtaskstatus == 'inprogress')
       #set($discard = $taskdepinprogress.add($dtask))
@@ -407,10 +421,16 @@ icon=icon:calendar_view_month</parameters>
   #end
   (% class="task-card-subtasks" %)
   (((
-    #foreach($tdone in $taskdepdone)
-      (% class="task-card-subtasks-status task-card-subtasks-status-done" %)
+    #foreach($tlate in $taskdeplate)
+      (% class="task-card-subtasks-status task-card-subtasks-status-late" %)
       (((
-        #cardsStatusSubtask($tdone)
+        #cardsStatusSubtask($tlate)
+      )))
+    #end
+    #foreach($ttodo in $taskdeptodo)
+      (% class="task-card-subtasks-status task-card-subtasks-status-todo" %)
+      (((
+        #cardsStatusSubtask($ttodo)
       )))
     #end
     #foreach($tinprogress in $taskdepinprogress)
@@ -419,10 +439,10 @@ icon=icon:calendar_view_month</parameters>
         #cardsStatusSubtask($tinprogress)
       )))
     #end
-    #foreach($ttodo in $taskdeptodo)
-      (% class="task-card-subtasks-status task-card-subtasks-status-todo" %)
+    #foreach($tdone in $taskdepdone)
+      (% class="task-card-subtasks-status task-card-subtasks-status-done" %)
       (((
-        #cardsStatusSubtask($ttodo)
+        #cardsStatusSubtask($tdone)
       )))
     #end
   )))
