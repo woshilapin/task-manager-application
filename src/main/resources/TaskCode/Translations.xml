@@ -60,6 +60,7 @@
   <content>Tasks.WebHome.title = Task manager
 Tasks.WebHome.add_a_new_task = Add a new task
 Tasks.WebHome.list_of_tasks = List of tasks
+Tasks.WebHome.due_date_on = Due on
 
 TaskCode.TaskClass_defaulttitle = No title
 TaskCode.TaskClass_name = Name

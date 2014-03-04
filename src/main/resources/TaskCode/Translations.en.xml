@@ -12,8 +12,8 @@
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <creationDate>1393842590000</creationDate>
-  <date>1393842590000</date>
-  <contentUpdateDate>1393842590000</contentUpdateDate>
+  <date>1393948345000</date>
+  <contentUpdateDate>1393948345000</contentUpdateDate>
   <version>1.1</version>
   <title/>
   <defaultTemplate/>
@@ -25,6 +25,7 @@
   <content>Tasks.WebHome.title = Task manager
 Tasks.WebHome.add_a_new_task = Add a new task
 Tasks.WebHome.list_of_tasks = List of tasks
+Tasks.WebHome.due_date_on = Due on
 
 TaskCode.TaskClass_defaulttitle = No title
 TaskCode.TaskClass_name = Name

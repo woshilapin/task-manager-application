@@ -12,8 +12,8 @@
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <creationDate>1393842590000</creationDate>
-  <date>1393940976000</date>
-  <contentUpdateDate>1393940859000</contentUpdateDate>
+  <date>1393949505000</date>
+  <contentUpdateDate>1393948323000</contentUpdateDate>
   <version>1.1</version>
   <title/>
   <defaultTemplate/>
@@ -114,7 +114,7 @@
   padding-left: 1em;
   padding-right: 1em;
 
-  box-shadow: 0.66em 0.33ex 1ex gray;
+  box-shadow: 0.5em 0.5ex 0.5ex #E0E0E0, inset 0.5em 1ex 1em -1ex #2173AF;
 
   border-style: solid;
   border-width: 1px;
@@ -125,9 +125,9 @@
 .task-card-subtasks {
   display: block;
   width: 100%;
-  height: 4px;
+  height: 1ex;
 
-  margin: 4px;
+  margin: 0.5ex;
   padding: 0px;
 
   line-height: 0px;
@@ -136,65 +136,77 @@
 }
 .task-card-subtasks-status {
   display: inline-block;
-  width: 1em;
-  height: 0.66ex;
+  width: 1.5em;
+  height: 1ex;
 
   margin: 0px;
   margin-right: 0.1em;
   padding: 0px;
 
   border-style: none;
-  border-radius: 0.33ex;
+  border-radius: 1ex;
 }
-.tooltip {
+.task-card-subtasks-status .tooltip {
   position: absolute;
-  z-index: 10;
   width: 15em;
-  font-size: 0%;
+  z-index: 10;
+
+  margin: 0em;
   padding: 0.5em;
 
   background: #FFFFFF;
+  font-size: 0%;
+
   border-style: solid;
-  border-radius: 0.33ex;
+  border-radius: 1ex;
   border-width: 0.33ex;
 
   opacity: 0;
-  transition: font-size 0.25s ease-in-out;
+  transition: opacity 0.25s ease-in-out, font-size 0.25s ease-in-out;
 }
-.tooltip img {
-  height: 0em;
-  transition: height 0.25s ease-in-out;
-}
-.tooltip::after {
-  display: block;
-
-  top: 0px;
-  left: 0px;
+.task-card-subtasks-status .tooltip img {
+  max-height: 0ex;
+  transition: max-height 0.25s ease-in-out;
 }
 .task-card-subtasks-status:hover .tooltip {
   opacity: 0.9;
   font-size: 90%;
 }
 .task-card-subtasks-status:hover .tooltip img {
-  height: 3ex;
+  max-height: 5ex;
 }
 .task-card-subtasks-status-done {
   background: green;
 }
 .task-card-subtasks-status-done .tooltip {
   border-color: green;
+  box-shadow: 0.5em 0.5ex 0.5ex #E0FFE0;
+}
+.task-card-subtasks-status-done .tooltip::before {
+  content: "[$services.localization.render('TaskCode.TaskClass_status_done')] ";
+  color: green;
 }
 .task-card-subtasks-status-inprogress {
   background: red;
 }
 .task-card-subtasks-status-inprogress .tooltip {
   border-color: red;
+  box-shadow: 0.5em 0.5ex 0.5ex #FFE0E0;
+}
+.task-card-subtasks-status-inprogress .tooltip::before {
+  content: "[$services.localization.render('TaskCode.TaskClass_status_inprogress')] ";
+  color: red;
 }
 .task-card-subtasks-status-todo {
   background: gray;
 }
 .task-card-subtasks-status-todo .tooltip {
   border-color: gray;
+  box-shadow: 0.5em 0.5ex 0.5ex #E0E0E0;
+}
+.task-card-subtasks-status-todo .tooltip::before {
+  content: "[$services.localization.render('TaskCode.TaskClass_status_todo')] ";
+  color: gray;
 }
 
 .task-card-title {
@@ -215,13 +227,51 @@
 .task-card-assignee {
   display: inline-block;
   padding: 0.2em;
+  width: 2.5em;
+
+  border-style: solid;
+  border-color: white;
+  border-width: 0.1ex;
+  border-radius: 1ex;
+}
+.task-card-assignee img {
+  height: 5ex;
+  background-position: center center;
+}
+.task-card-assignee .tooltip {
+  display: block;
+  position: absolute;
+  z-index: 10;
+
+  margin-left: -0.5ex;
+  margin-top: -5.875ex;
+  max-width: 0em;
+  padding: 0.25ex;
+
+  background: white;
+  box-shadow: 0.5em 0.5ex 0.5ex #E0E0E0;
+
+  border-style: solid;
+  border-color: gray;
+  border-width: 0.25ex;
+  border-radius: 1ex;
+
+  font-size: 0%;
+
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out, max-width 0.25s ease-in-out, font-size 0.25s ease-in-out;
+}
+.task-card-assignee:hover .tooltip {
+  opacity: 0.9;
+  max-width: 20em;
+  font-size: 100%;
 }</code>
     </property>
     <property>
       <name>Task card style</name>
     </property>
     <property>
-      <parse/>
+      <parse>1</parse>
     </property>
     <property>
       <use>currentPage</use>
@@ -335,8 +385,7 @@ icon=icon:calendar_view_month</parameters>
 {{velocity}}
 #set($query = "from doc.object(TaskCode.TaskClass) as task where doc.fullName &lt;&gt; 'TaskCode.TaskTemplate' order by task.duedate")
 #set($results = $services.query.xwql($query).execute())
-
-#macro(subcardsStatus $task)
+#macro(cardsStatus $task)
   #set($taskdependencies = $task.getProperty('dependencies').value)
   #set($taskdeptodo = [])
   #set($taskdepinprogress = [])
@@ -361,58 +410,57 @@ icon=icon:calendar_view_month</parameters>
     #foreach($tdone in $taskdepdone)
       (% class="task-card-subtasks-status task-card-subtasks-status-done" %)
       (((
-        #subcardsStatusSubtask($tdone)
+        #cardsStatusSubtask($tdone)
       )))
     #end
     #foreach($tinprogress in $taskdepinprogress)
       (% class="task-card-subtasks-status task-card-subtasks-status-inprogress" %)
       (((
-        #subcardsStatusSubtask($tinprogress)
+        #cardsStatusSubtask($tinprogress)
       )))
     #end
     #foreach($ttodo in $taskdeptodo)
       (% class="task-card-subtasks-status task-card-subtasks-status-todo" %)
       (((
-        #subcardsStatusSubtask($ttodo)
+        #cardsStatusSubtask($ttodo)
       )))
     #end
   )))
 #end
-#macro(subcardsStatusSubtask $task)
-(% class="tooltip" %)
-(((
-  [[$task.getProperty('title').value&gt;&gt;$task.getName()]]
-  (% class="task-card-duedate" %)
+#macro(cardsStatusSubtask $task)
+  (% class="tooltip" %)
   (((
-  Due on $task.getProperty('duedate').value
-  )))
-  (% class="task-card-assignees" %)
-  (((
-    #foreach($assignee in $task.getProperty('assignee').value.split(','))
-      (% class="task-card-assignee user-avatar-wrapper" %)
-      (((
-        #smallUserAvatar($assignee)
-      )))
-    #end
-  )))
+    [[$task.getProperty('title').value&gt;&gt;$task.getName()]]
+    (% class="task-card-duedate" %)
+    (((
+      $services.localization.render('Tasks.WebHome.due_date_on') ${task.get('duedate')}
+    )))
+    (% class="task-card-assignees" %)
+    (((
+      #foreach($assignee in $task.getProperty('assignee').value.split(','))
+        (% class="task-card-assignee user-avatar-wrapper" %)
+        (((
+          #largeUserAvatar($assignee)
+        )))
+      #end
+    )))
 )))
 #end
-
-#macro(subcardsTitle $task)
+#macro(cardsTitle $task)
   #set($tasktitle = $task.getProperty('title').value)
   (% class="task-card-title" %)
   (((
-    [[$tasktitle&gt;&gt;$task.getName()]]
+    [[${tasktitle}&gt;&gt;${task.getName()}]]
   )))
 #end
-#macro(subcardsDueDate $task)
-  #set($taskduedate = $task.getProperty('duedate').value)
+#macro(cardsDueDate $task)
+  #set($taskduedate = $task.get('duedate'))
   (% class="task-card-duedate" %)
   (((
-    Due on $taskduedate
+    $services.localization.render('Tasks.WebHome.due_date_on') $taskduedate
   )))
 #end
-#macro(subcardsAssignees $task)
+#macro(cardsAssignees $task)
   #set($taskassignee = $task.getProperty('assignee').value)
   #set($taskassignees = [])
   #foreach($a in $taskassignee.split(','))
@@ -426,7 +474,12 @@ icon=icon:calendar_view_month</parameters>
     #foreach($assignee in $taskassignees)
       (% class="task-card-assignee user-avatar-wrapper" %)
       (((
-        #smallUserAvatar($assignee.getName())
+        #largeUserAvatar(${assignee.getName()})
+        (% class="tooltip" %)
+        (((
+          [[#largeUserAvatar(${assignee.getName()})&gt;&gt;$assignee.getName()]]
+          [[${assignee.getProperty('first_name').value} ${assignee.getProperty('last_name').value}&gt;&gt;$assignee.getName()]]
+        )))
       )))
     #end
   )))
@@ -439,10 +492,10 @@ icon=icon:calendar_view_month</parameters>
   #set($task = $taskpage.getObject('TaskCode.TaskClass'))
   (% class="task-card" %)
   (((
-    #subcardsStatus($task)
-    #subcardsTitle($task)
-    #subcardsDueDate($task)
-    #subcardsAssignees($task)
+    #cardsStatus($task)
+    #cardsTitle($task)
+    #cardsDueDate($task)
+    #cardsAssignees($task)
   )))
 #end
 {{/html}}
