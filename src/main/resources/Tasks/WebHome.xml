@@ -12,8 +12,8 @@
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <creationDate>1393842590000</creationDate>
-  <date>1393953777000</date>
-  <contentUpdateDate>1393953368000</contentUpdateDate>
+  <date>1394121245000</date>
+  <contentUpdateDate>1394104725000</contentUpdateDate>
   <version>1.1</version>
   <title/>
   <defaultTemplate/>
@@ -102,24 +102,99 @@
       <cache>long</cache>
     </property>
     <property>
-      <code>.task-card {
+      <code>/*
+ * There is different possibilities for this file depending of the compatibilities of the webbrowser.
+ * Branch 1 is compatible
+ * Branch 2 use CSS3 capabilities
+ */
+#set($compatible = true)
+.task-list-category {
   display: inline-block;
-  width: 20%;
+  top: 0;
+  width: 24%;
+  vertical-align: top;
+  margin-top: 3ex;
+  margin-bottom: 3ex;
+  padding: 0.5ex;
+}
+.task-list-category::before {
+  text-align: center;
+  font-size: 120%;
+}
+.task-list-category.status-late::before {
+  content: "$services.localization.render('TaskCode.TaskClass_status_late')";
+  color: red;
+}
+.task-list-category.status-todo::before {
+  content: "$services.localization.render('TaskCode.TaskClass_status_todo')";
+  text-align: center;
+  color: #2173AF;
+}
+.task-list-category.status-inprogress::before {
+  content: "$services.localization.render('TaskCode.TaskClass_status_inprogress')";
+  text-align: center;
+  color: green;
+}
+.task-list-category.status-done::before {
+  content: "$services.localization.render('TaskCode.TaskClass_status_done')";
+  text-align: center;
+  color: gray;
+}
+.task-list-category .task-card {
+  margin-top: -1.5ex;
+  #if($compatible)
+  transition: margin 0.25s ease-in-out;
+  #else
+  transition: transform 0.25s ease-in-out;
+  #end
+}
+.task-list-category .task-card:first-child {
+  margin-top: 0ex;
+}
+
+#if($compatible)
+.task-list-category .task-card:hover {
+  margin-top: -3.25ex;
+  margin-bottom: 1.75ex;
+  z-index:5;
+}
+.task-list-category .task-card:first-child:hover {
+  margin-top: -1.75ex;
+  margin-bottom: 1.75ex;
+}
+#else
+.task-list-category .task-card:hover {
+  transform: translateY(-1.75ex);
+  z-index:5;
+}
+#end
+.task-card {
+  display: inline-block;
+  width: 90%;
+  background: white;
 
   margin: 0px;
-  margin-right: 1em;
-  margin-bottom: 0.5ex;
   padding-top: 0.5ex;
   padding-bottom :1ex;
-  padding-left: 1em;
-  padding-right: 1em;
-
-  box-shadow: 0.5em 0.5ex 0.5ex #E0E0E0, inset 0.5em 1ex 1em -1ex #2173AF;
+  padding-left: 5%;
+  padding-right: 5%;
 
   border-style: solid;
   border-width: 1px;
   border-color: gray;
   border-radius: 1ex;
+}
+.task-card.status-late:hover {
+  box-shadow: 0.5em 0.5ex 0.5ex #E0E0E0, inset 0em 0ex 1ex #FF8080;
+}
+.task-card.status-todo:hover {
+  box-shadow: 0.5em 0.5ex 0.5ex #E0E0E0, inset 0em 0ex 1ex #2173AF;
+}
+.task-card.status-inprogress:hover {
+  box-shadow: 0.5em 0.5ex 0.5ex #E0E0E0, inset 0em 0ex 1ex #80C000;
+}
+.task-card.status-done:hover {
+  box-shadow: 0.5em 0.5ex 0.5ex #E0E0E0, inset 0em 0ex 1ex #808080;
 }
 
 .task-card-subtasks {
@@ -155,74 +230,87 @@
   padding: 0.5em;
 
   background: #FFFFFF;
-  font-size: 0%;
-
   border-style: solid;
   border-radius: 1ex;
   border-width: 0.33ex;
 
   opacity: 0;
-  transition: opacity 0.25s ease-in-out, font-size 0.25s ease-in-out;
+
+  #if($compatible)
+  font-size: 0%;
+  transition: font-size 0.25s ease-in-out;
+  #else
+  font-size: 90%;
+  transform-origin: top left;
+  transform: scale(0.5, 0);
+  transition: transform 0.25s ease-in-out;
+  #end
 }
+#if($compatible)
 .task-card-subtasks-status .tooltip img {
   max-height: 0ex;
   transition: max-height 0.25s ease-in-out;
 }
+#end
 .task-card-subtasks-status:hover .tooltip {
   opacity: 0.9;
+  #if($compatible)
   font-size: 90%;
+  #else
+  transform: scale(1, 1);
+  #end
 }
 .task-card-subtasks-status:hover .tooltip img {
   max-height: 5ex;
 }
-.task-card-subtasks-status-late {
+.task-card-subtasks .status-late {
   background: red;
 }
-.task-card-subtasks-status-late .tooltip {
+.task-card-subtasks .status-late .tooltip {
   border-color: red;
   box-shadow: 0.5em 0.5ex 0.5ex #FFE0E0;
 }
-.task-card-subtasks-status-late .tooltip::before {
+.task-card-subtasks .status-late .tooltip::before {
   content: "[$services.localization.render('TaskCode.TaskClass_status_late')] ";
   color: red;
 }
-.task-card-subtasks-status-todo {
+.task-card-subtasks .status-todo {
   background: #2173AF;
 }
-.task-card-subtasks-status-todo .tooltip {
+.task-card-subtasks .status-todo .tooltip {
   border-color: #2173AF;
   box-shadow: 0.5em 0.5ex 0.5ex #71C3FF;
 }
-.task-card-subtasks-status-todo .tooltip::before {
+.task-card-subtasks .status-todo .tooltip::before {
   content: "[$services.localization.render('TaskCode.TaskClass_status_todo')] ";
   color: #2173AF;
 }
-.task-card-subtasks-status-inprogress {
+.task-card-subtasks .status-inprogress {
   background: green;
 }
-.task-card-subtasks-status-inprogress .tooltip {
+.task-card-subtasks .status-inprogress .tooltip {
   border-color: green;
   box-shadow: 0.5em 0.5ex 0.5ex #E0FFE0;
 }
-.task-card-subtasks-status-inprogress .tooltip::before {
+.task-card-subtasks .status-inprogress .tooltip::before {
   content: "[$services.localization.render('TaskCode.TaskClass_status_inprogress')] ";
   color: green;
 }
-.task-card-subtasks-status-done {
+.task-card-subtasks .status-done {
   background: gray;
 }
-.task-card-subtasks-status-done .tooltip {
+.task-card-subtasks .status-done .tooltip {
   border-color: gray;
   box-shadow: 0.5em 0.5ex 0.5ex #E0E0E0;
 }
-.task-card-subtasks-status-done .tooltip::before {
+.task-card-subtasks .status-done .tooltip::before {
   content: "[$services.localization.render('TaskCode.TaskClass_status_done')] ";
   color: gray;
 }
 
 .task-card-title {
   color: #2173AF;
-  text-align: left;
+  text-align: center;
   font-size: 120%;
 }
 
@@ -256,7 +344,6 @@
 
   margin-left: -0.5ex;
   margin-top: -5.875ex;
-  max-width: 0em;
   padding: 0.25ex;
 
   background: white;
@@ -267,19 +354,188 @@
   border-width: 0.25ex;
   border-radius: 1ex;
 
-  font-size: 0%;
-
   opacity: 0;
-  transition: opacity 0.25s ease-in-out, max-width 0.25s ease-in-out, font-size 0.25s ease-in-out;
+
+  #if($compatible)
+  max-width: 0em;
+  font-size: 0%;
+  transition: max-width 0.25s ease-in-out, font-size 0.25s ease-in-out;
+  #else
+  font-size: 100%;
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 0.25s ease-in-out;
+  #end
 }
 .task-card-assignee:hover .tooltip {
   opacity: 0.9;
+  #if($compatible)
   max-width: 20em;
   font-size: 100%;
+  #else
+  transform: scaleX(1);
+  #end
 }</code>
     </property>
     <property>
       <name>Task card style</name>
+    </property>
+    <property>
+      <parse>1</parse>
+    </property>
+    <property>
+      <use>currentPage</use>
+    </property>
+  </object>
+  <object>
+    <class>
+      <name>XWiki.StyleSheetExtension</name>
+      <customClass/>
+      <customMapping/>
+      <defaultViewSheet/>
+      <defaultEditSheet/>
+      <defaultWeb/>
+      <nameField/>
+      <validationScript/>
+      <cache>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <multiSelect>0</multiSelect>
+        <name>cache</name>
+        <number>5</number>
+        <prettyName>Caching policy</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators> ,|</separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>long|short|default|forbid</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </cache>
+      <code>
+        <disabled>0</disabled>
+        <name>code</name>
+        <number>2</number>
+        <prettyName>Code</prettyName>
+        <rows>20</rows>
+        <size>50</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.TextAreaClass</classType>
+      </code>
+      <name>
+        <disabled>0</disabled>
+        <name>name</name>
+        <number>1</number>
+        <prettyName>Name</prettyName>
+        <size>30</size>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.StringClass</classType>
+      </name>
+      <parse>
+        <disabled>0</disabled>
+        <displayFormType>select</displayFormType>
+        <displayType>yesno</displayType>
+        <name>parse</name>
+        <number>4</number>
+        <prettyName>Parse content</prettyName>
+        <unmodifiable>0</unmodifiable>
+        <classType>com.xpn.xwiki.objects.classes.BooleanClass</classType>
+      </parse>
+      <use>
+        <cache>0</cache>
+        <disabled>0</disabled>
+        <displayType>select</displayType>
+        <multiSelect>0</multiSelect>
+        <name>use</name>
+        <number>3</number>
+        <prettyName>Use this extension</prettyName>
+        <relationalStorage>0</relationalStorage>
+        <separator> </separator>
+        <separators> ,|</separators>
+        <size>1</size>
+        <unmodifiable>0</unmodifiable>
+        <values>currentPage=Always on this page|onDemand=On demand|always=Always on this wiki</values>
+        <classType>com.xpn.xwiki.objects.classes.StaticListClass</classType>
+      </use>
+    </class>
+    <name>Tasks.WebHome</name>
+    <number>1</number>
+    <className>XWiki.StyleSheetExtension</className>
+    <guid>d5524425-40f4-4148-bd67-8da9a6b11d7f</guid>
+    <property>
+      <cache>long</cache>
+    </property>
+    <property>
+      <code>/*
+ * There is different possibilities for this file depending of the compatibilities of the webbrowser.
+ * Branch 1 is compatible
+ * Branch 2 use CSS3 capabilities
+ */
+#set($compatible = true)
+.task-timeline-task .task-card.tooltip {
+  display: block;
+  position: absolute;
+  width: 100%;
+  min-width: 15em;
+
+  margin: 0em;
+  margin-top: -0.66ex;
+  padding: 0.5em;
+
+  background: #FFFFFF;
+
+  opacity: 0;
+
+  #if($compatible)
+  font-size: 0%;
+  transition: font-size 0.25s ease-in-out;
+  #else
+  font-size: 100%;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 0.25s ease-in-out;
+  #end
+}
+.task-timeline-task:hover .task-card.tooltip {
+  opacity: 1;
+  z-index: 5;
+  #if($compatible)
+  font-size: 100%;
+  #else
+  transform: scaleY(1);
+  #end
+}
+.task-timeline-task-date {
+  font-size: 50%;
+  color: gray;
+  text-align: right;
+}
+.task-timeline-task-bar {
+  border-style: solid;
+  border-radius: 1ex;
+  border-width: 0.33ex;
+  height: 0ex;
+  margin: 0em;
+  padding: 0em;
+
+  background: #FFFFFF;
+}
+.task-timeline-task.status-late .task-timeline-task-bar {
+  border-color: red;
+}
+.task-timeline-task.status-todo .task-timeline-task-bar {
+  border-color: #2173AF;
+}
+.task-timeline-task.status-inprogress .task-timeline-task-bar {
+  border-color: green;
+}
+.task-timeline-task.status-done .task-timeline-task-bar {
+  border-color: gray;
+}</code>
+    </property>
+    <property>
+      <name>Timeline style</name>
     </property>
     <property>
       <parse>1</parse>
@@ -396,6 +652,49 @@ icon=icon:calendar_view_month</parameters>
 {{velocity}}
 #set($query = "from doc.object(TaskCode.TaskClass) as task where doc.fullName &lt;&gt; 'TaskCode.TaskTemplate' order by task.duedate")
 #set($results = $services.query.xwql($query).execute())
+#macro(drawTimeline $task)
+  #set($today = $datetool.date)
+  #set($onedayduration = 86400000.0)
+  #set($totalduration = 120.0*$onedayduration)
+  #set($taskstatus = $task.getProperty('status').value)
+  #set($taskduedate = $task.getProperty('duedate').value)
+  #if(($taskstatus != 'done' || $taskduedate.after($datetool.date)) &amp;&amp; $taskduedate.time &lt; $today.time + $totalduration)
+    #set($taskstart = $taskduedate.time - 7*$onedayduration)
+    #if($xwiki.getDocument($task.getName()).getContentUpdateDate().after($today))
+      #set($taskstart = $xwiki.getDocument($task.getName()).getContentUpdateDate().time)
+    #else
+      #set($taskstart = $today.time)
+    #end
+    #set($taskend = $taskduedate.time)
+    #set($taskduration = $taskend - $taskstart)
+    #set($taskwidth = 100*$taskduration/$totalduration)
+    #set($taskoffset = 100*($taskstart - $today.time)/$totalduration)
+    #if($taskduedate.before($today.time)) ## Replace at the beginning of the line each late task
+      #set($taskoffset = 0)
+      #set($taskwidth = 5)
+    #end
+    #if($taskstatus != 'done' &amp;&amp; $taskduedate.before($datetool.date))
+      #set($classname = 'status-late')
+    #else
+      #set($classname = "status-${taskstatus}")
+    #end
+    (% class="task-timeline-task ${classname}" style="display: block;position: relative;margin: 0.5ex;width: ${taskwidth}%;left: ${taskoffset}%;" %)
+    (((
+      (% class="task-timeline-task-date" %)
+      (((
+        $datetool.whenIs($taskend)
+      )))
+      (% class="task-timeline-task-bar" %)((()))
+      (% class="task-card tooltip ${classname}" %)
+      (((
+        #cardsStatus($task)
+        #cardsTitle($task)
+        #cardsAssignees($task)
+      )))
+    )))
+  #end
+#end
+
 #macro(cardsStatus $task)
   #set($taskdependencies = $task.getProperty('dependencies').value)
   #set($taskdeplate = [])
@@ -416,31 +715,31 @@ icon=icon:calendar_view_month</parameters>
     #elseif($dtaskstatus == 'done')
       #set($discard = $taskdepdone.add($dtask))
     #else
-      {{error}}Invalid task status. Contact administrator{{/error}}
+      {{error}}Invalid task status. Contact the administrator.{{/error}}
     #end
   #end
   (% class="task-card-subtasks" %)
   (((
     #foreach($tlate in $taskdeplate)
-      (% class="task-card-subtasks-status task-card-subtasks-status-late" %)
+      (% class="task-card-subtasks-status status-late" %)
       (((
         #cardsStatusSubtask($tlate)
       )))
     #end
     #foreach($ttodo in $taskdeptodo)
-      (% class="task-card-subtasks-status task-card-subtasks-status-todo" %)
+      (% class="task-card-subtasks-status status-todo" %)
       (((
         #cardsStatusSubtask($ttodo)
       )))
     #end
     #foreach($tinprogress in $taskdepinprogress)
-      (% class="task-card-subtasks-status task-card-subtasks-status-inprogress" %)
+      (% class="task-card-subtasks-status status-inprogress" %)
       (((
         #cardsStatusSubtask($tinprogress)
       )))
     #end
     #foreach($tdone in $taskdepdone)
-      (% class="task-card-subtasks-status task-card-subtasks-status-done" %)
+      (% class="task-card-subtasks-status status-done" %)
       (((
         #cardsStatusSubtask($tdone)
       )))
@@ -506,18 +805,62 @@ icon=icon:calendar_view_month</parameters>
 #end
 
 {{html wiki="true"}}
+(% class="task-timeline" %)
+(((
 #foreach($taskid in $results)
   #set($taskpageref = $services.model.resolveDocument($taskid))
   #set($taskpage = $xwiki.getDocument($taskpageref))
   #set($task = $taskpage.getObject('TaskCode.TaskClass'))
-  (% class="task-card" %)
-  (((
-    #cardsStatus($task)
-    #cardsTitle($task)
-    #cardsDueDate($task)
-    #cardsAssignees($task)
-  )))
+  #drawTimeline($task)
+
 #end
+)))
+(% class="task-list" %)
+(((
+  #set($tasklistlate = [])
+  #set($tasklisttodo = [])
+  #set($tasklistinprogress = [])
+  #set($tasklistdone = [])
+#foreach($taskid in $results)
+  #set($taskpageref = $services.model.resolveDocument($taskid))
+  #set($taskpage = $xwiki.getDocument($taskpageref))
+  #set($task = $taskpage.getObject('TaskCode.TaskClass'))
+  #set($taskstatus = $task.getProperty('status').value)
+  #set($taskduedate = $task.getProperty('duedate').value)
+  #if($taskduedate.before($datetool.date) &amp;&amp; $taskstatus != 'done')
+    #set($discard = $tasklistlate.add($task))
+  #elseif($taskstatus == 'todo')
+    #set($discard = $tasklisttodo.add($task))
+  #elseif($taskstatus == 'inprogress')
+    #set($discard = $tasklistinprogress.add($task))
+  #elseif($taskstatus == 'done')
+    #set($discard = $tasklistdone.add($task))
+  #else
+    {{error}}Invalid task status. Contact the administrator.{{/error}}
+  #end
+#end
+  #set($tasks = {})
+  #set($discard = $tasks.put('late', $tasklistlate))
+  #set($discard = $tasks.put('todo', $tasklisttodo))
+  #set($discard = $tasks.put('inprogress', $tasklistinprogress))
+  #set($discard = $tasks.put('done', $tasklistdone))
+  #foreach($taskkeylist in $tasks.keySet())
+    (% class="task-list-category status-${taskkeylist}" %)
+    (((
+      #foreach($task in $tasks.get($taskkeylist))
+        #set($classname = "status-${taskkeylist}")
+        (% class="task-card ${classname}" %)
+        (((
+          #cardsStatus($task)
+          #cardsTitle($task)
+          #cardsDueDate($task)
+          #cardsAssignees($task)
+        )))
+      #end
+    )))
+  #end
+
+)))
 {{/html}}
 
 {{/velocity}}</content>
