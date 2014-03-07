@@ -12,8 +12,8 @@
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <creationDate>1393842590000</creationDate>
-  <date>1394202505000</date>
-  <contentUpdateDate>1394202329000</contentUpdateDate>
+  <date>1394212433000</date>
+  <contentUpdateDate>1394212325000</contentUpdateDate>
   <version>1.1</version>
   <title/>
   <defaultTemplate/>
@@ -709,7 +709,7 @@ icon=icon:calendar_view_month</parameters>
     #else
       #set($classname = "status-${taskstatus}")
     #end
-    #displayTimelineForTask($task, $taskwidth, $taskoffset, $taskstatus, $taskstart, $taskend)
+    #displayTimelineTask($task, $taskwidth, $taskoffset, $taskstatus, $taskstart, $taskend)
   #end
 #end
 #### MACRO computeCardDependencies
@@ -734,7 +734,9 @@ icon=icon:calendar_view_month</parameters>
     #end
     #set($discard = $deptaskslist.get($dtaskstatus).add($dtask))
   #end
-  #displayCardDependencies($deptaskslist)
+  #if(!$taskdependencies.isEmpty())
+    #displayCardDependencies($deptaskslist)
+  #end
 #end
 #### MACRO computeCardTitle
 ## $task[TaskCode.TaskClass] task to be computed
@@ -743,7 +745,9 @@ icon=icon:calendar_view_month</parameters>
 #macro(computeCardTitle $task)
   #set($tasktitle = $task.getProperty('title').value)
   #set($tasklink = $task.getName())
-  #displayCardTitle($tasktitle, $tasklink)
+  #if(!$tasktitle.trim().isEmpty())
+    #displayCardTitle($tasktitle, $tasklink)
+  #end
 #end
 #### MACRO computeCardDueDate
 ## $task[TaskCode.TaskClass] task to be computed
@@ -751,7 +755,9 @@ icon=icon:calendar_view_month</parameters>
 ## Extract the due date data
 #macro(computeCardDueDate $task)
   #set($taskduedate = $task.get('duedate'))
-  #displayCardDueDate($taskduedate)
+  #if(!$taskduedate.trim().isEmpty())
+    #displayCardDueDate($taskduedate)
+  #end
 #end
 #### MACRO computeCardAssignees
 ## $task[TaskCode.TaskClass] task to be computed
@@ -761,17 +767,21 @@ icon=icon:calendar_view_month</parameters>
   #set($taskassignee = $task.getProperty('assignee').value)
   #set($taskassignees = [])
   #foreach($a in $taskassignee.split(','))
-    #set($assigneepageref = $services.model.resolveDocument($a))
-    #set($assigneepage = $xwiki.getDocument($assigneepageref))
-    #set($assignee = $assigneepage.getObject('XWiki.XWikiUsers'))
-    #set($discard = $taskassignees.add($assignee))
+    #if(!$a.trim().isEmpty())
+      #set($assigneepageref = $services.model.resolveDocument($a))
+      #set($assigneepage = $xwiki.getDocument($assigneepageref))
+      #set($assignee = $assigneepage.getObject('XWiki.XWikiUsers'))
+      #set($discard = $taskassignees.add($assignee))
+    #end
   #end
-  #displayCardAssignees($taskassignees)
+  #if(!$taskassignees.isEmpty())
+    #displayCardAssignees($taskassignees)
+  #end
 #end
 ################################################
 ################ DISPLAY MACROS ################
 ################################################
-#### MACRO displayTimelineForTask
+#### MACRO displayTimelineTask
 ## @task[TaskCode.TaskClass] Task to be computed
 ## @taskwidth[float] Size in percent of the parent element of the task block
 ## @taskoffset[float] Offset in percent from the left border for the task block
@@ -780,7 +790,7 @@ icon=icon:calendar_view_month</parameters>
 ## @taskenddtime[long] Timestamp of the end date of the task
 ##
 ## Display a colored bar for one task; there will be also a tooltip on each bar displaying the task as a card
-#macro(displayTimelineForTask $task $taskwidth $taskoffset $taskstatus $taskstarttime $taskenddtime)
+#macro(displayTimelineTask $task $taskwidth $taskoffset $taskstatus $taskstarttime $taskenddtime)
   (% class="task-timeline-task status-${taskstatus}" style="display: block;position: relative;margin: 0.5ex;width: ${taskwidth}%;left: ${taskoffset}%;" %)
   (((
     (% class="task-timeline-task-date" %)
