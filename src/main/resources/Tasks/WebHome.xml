@@ -12,8 +12,8 @@
   <customClass/>
   <contentAuthor>xwiki:XWiki.Admin</contentAuthor>
   <creationDate>1393842590000</creationDate>
-  <date>1394121245000</date>
-  <contentUpdateDate>1394104725000</contentUpdateDate>
+  <date>1394202505000</date>
+  <contentUpdateDate>1394202329000</contentUpdateDate>
   <version>1.1</version>
   <title/>
   <defaultTemplate/>
@@ -168,6 +168,27 @@
   z-index:5;
 }
 #end
+
+.task-card .task-card-title::before {
+  display: block;
+  font-size: 80%;
+}
+.task-card.status-late .task-card-title::before {
+  content: "[$services.localization.render('TaskCode.TaskClass_status_late')] ";
+  color: red;
+}
+.task-card.status-todo .task-card-title::before {
+  content: "[$services.localization.render('TaskCode.TaskClass_status_todo')] ";
+  color: #2173AF;
+}
+.task-card.status-inprogress .task-card-title::before {
+  content: "[$services.localization.render('TaskCode.TaskClass_status_inprogress')] ";
+  color: green;
+}
+.task-card.status-done .task-card-title::before {
+  content: "[$services.localization.render('TaskCode.TaskClass_status_done')] ";
+  color: gray;
+}
 .task-card {
   display: inline-block;
   width: 90%;
@@ -184,6 +205,7 @@
   border-color: gray;
   border-radius: 1ex;
 }
+
 .task-card.status-late:hover {
   box-shadow: 0.5em 0.5ex 0.5ex #E0E0E0, inset 0em 0ex 1ex #FF8080;
 }
@@ -650,18 +672,26 @@ icon=icon:calendar_view_month</parameters>
 == {{translation key="Tasks.WebHome.list_of_tasks" /}} ==
 
 {{velocity}}
-#set($query = "from doc.object(TaskCode.TaskClass) as task where doc.fullName &lt;&gt; 'TaskCode.TaskTemplate' order by task.duedate")
-#set($results = $services.query.xwql($query).execute())
-#macro(drawTimeline $task)
+################################################
+################ COMPUTE MACROS ################
+################################################
+#### MACRO computeTimelineTask
+## @task[TaskCode.TaskClass] Task to be computed
+##
+## Compute the timeline which will appear above the list of tasks
+## It calculates the duration of each task to calculate the size of the proportional block which will be display
+## The starting date of tasks is the date of creation of the corresponding page
+## The tasks in late are displayed at the beginning of the line (i.e. today instead of their starting date) with a predefined size
+#macro(computeTimelineTask $task)
   #set($today = $datetool.date)
   #set($onedayduration = 86400000.0)
   #set($totalduration = 120.0*$onedayduration)
   #set($taskstatus = $task.getProperty('status').value)
   #set($taskduedate = $task.getProperty('duedate').value)
+  #set($taskstartdate = $xwiki.getDocument($task.getName()).getContentUpdateDate())
   #if(($taskstatus != 'done' || $taskduedate.after($datetool.date)) &amp;&amp; $taskduedate.time &lt; $today.time + $totalduration)
-    #set($taskstart = $taskduedate.time - 7*$onedayduration)
-    #if($xwiki.getDocument($task.getName()).getContentUpdateDate().after($today))
-      #set($taskstart = $xwiki.getDocument($task.getName()).getContentUpdateDate().time)
+    #if($taskstartdate.after($today))
+      #set($taskstart = $taskstartdate.time)
     #else
       #set($taskstart = $today.time)
     #end
@@ -669,117 +699,65 @@ icon=icon:calendar_view_month</parameters>
     #set($taskduration = $taskend - $taskstart)
     #set($taskwidth = 100*$taskduration/$totalduration)
     #set($taskoffset = 100*($taskstart - $today.time)/$totalduration)
-    #if($taskduedate.before($today.time)) ## Replace at the beginning of the line each late task
+    #if($taskduedate.before($today.time)) ## Place late task at the beginning of the line and define a size
       #set($taskoffset = 0)
       #set($taskwidth = 5)
+      #set($taskstatus = 'late')
     #end
     #if($taskstatus != 'done' &amp;&amp; $taskduedate.before($datetool.date))
       #set($classname = 'status-late')
     #else
       #set($classname = "status-${taskstatus}")
     #end
-    (% class="task-timeline-task ${classname}" style="display: block;position: relative;margin: 0.5ex;width: ${taskwidth}%;left: ${taskoffset}%;" %)
-    (((
-      (% class="task-timeline-task-date" %)
-      (((
-        $datetool.whenIs($taskend)
-      )))
-      (% class="task-timeline-task-bar" %)((()))
-      (% class="task-card tooltip ${classname}" %)
-      (((
-        #cardsStatus($task)
-        #cardsTitle($task)
-        #cardsAssignees($task)
-      )))
-    )))
+    #displayTimelineForTask($task, $taskwidth, $taskoffset, $taskstatus, $taskstart, $taskend)
   #end
 #end
-
-#macro(cardsStatus $task)
+#### MACRO computeCardDependencies
+## @task[TaskCode.TaskClass] Task to be computed
+##
+## Compute and order by status the dependencies of the task
+#macro(computeCardDependencies $task)
   #set($taskdependencies = $task.getProperty('dependencies').value)
-  #set($taskdeplate = [])
-  #set($taskdeptodo = [])
-  #set($taskdepinprogress = [])
-  #set($taskdepdone = [])
+  #set($deptaskslist = {})
+  #set($discard = $deptaskslist.put('late', []))
+  #foreach($s in $xwiki.getPropertyClassFromName('TaskCode.TaskClass_status').getListValues())
+    #set($discard = $deptaskslist.put($s, []))
+  #end
   #foreach($dtaskid in $taskdependencies)
     #set($dtaskpageref = $services.model.resolveDocument($dtaskid))
     #set($dtaskpage = $xwiki.getDocument($dtaskpageref))
     #set($dtask = $dtaskpage.getObject('TaskCode.TaskClass'))
     #set($dtaskstatus = $dtask.getProperty('status').value)
-    #if($dtask.getProperty('duedate').value.before($datetool.date) &amp;&amp; $dtaskstatus != 'done')
-      #set($discard = $taskdeplate.add($dtask))
-    #elseif($dtaskstatus == 'todo')
-      #set($discard = $taskdeptodo.add($dtask))
-    #elseif($dtaskstatus == 'inprogress')
-      #set($discard = $taskdepinprogress.add($dtask))
-    #elseif($dtaskstatus == 'done')
-      #set($discard = $taskdepdone.add($dtask))
-    #else
-      {{error}}Invalid task status. Contact the administrator.{{/error}}
+    #set($dtaskduedate = $dtask.getProperty('duedate').value)
+    #if($dtaskduedate.before($datetool.date) &amp;&amp; $dtaskstatus != 'done')
+      #set($dtaskstatus = 'late')
     #end
+    #set($discard = $deptaskslist.get($dtaskstatus).add($dtask))
   #end
-  (% class="task-card-subtasks" %)
-  (((
-    #foreach($tlate in $taskdeplate)
-      (% class="task-card-subtasks-status status-late" %)
-      (((
-        #cardsStatusSubtask($tlate)
-      )))
-    #end
-    #foreach($ttodo in $taskdeptodo)
-      (% class="task-card-subtasks-status status-todo" %)
-      (((
-        #cardsStatusSubtask($ttodo)
-      )))
-    #end
-    #foreach($tinprogress in $taskdepinprogress)
-      (% class="task-card-subtasks-status status-inprogress" %)
-      (((
-        #cardsStatusSubtask($tinprogress)
-      )))
-    #end
-    #foreach($tdone in $taskdepdone)
-      (% class="task-card-subtasks-status status-done" %)
-      (((
-        #cardsStatusSubtask($tdone)
-      )))
-    #end
-  )))
+  #displayCardDependencies($deptaskslist)
 #end
-#macro(cardsStatusSubtask $task)
-  (% class="tooltip" %)
-  (((
-    [[$task.getProperty('title').value&gt;&gt;$task.getName()]]
-    (% class="task-card-duedate" %)
-    (((
-      $services.localization.render('Tasks.WebHome.due_date_on') ${task.get('duedate')}
-    )))
-    (% class="task-card-assignees" %)
-    (((
-      #foreach($assignee in $task.getProperty('assignee').value.split(','))
-        (% class="task-card-assignee user-avatar-wrapper" %)
-        (((
-          #largeUserAvatar($assignee)
-        )))
-      #end
-    )))
-)))
-#end
-#macro(cardsTitle $task)
+#### MACRO computeCardTitle
+## $task[TaskCode.TaskClass] task to be computed
+##
+## Extract the title data
+#macro(computeCardTitle $task)
   #set($tasktitle = $task.getProperty('title').value)
-  (% class="task-card-title" %)
-  (((
-    [[${tasktitle}&gt;&gt;${task.getName()}]]
-  )))
+  #set($tasklink = $task.getName())
+  #displayCardTitle($tasktitle, $tasklink)
 #end
-#macro(cardsDueDate $task)
+#### MACRO computeCardDueDate
+## $task[TaskCode.TaskClass] task to be computed
+##
+## Extract the due date data
+#macro(computeCardDueDate $task)
   #set($taskduedate = $task.get('duedate'))
-  (% class="task-card-duedate" %)
-  (((
-    $services.localization.render('Tasks.WebHome.due_date_on') $taskduedate
-  )))
+  #displayCardDueDate($taskduedate)
 #end
-#macro(cardsAssignees $task)
+#### MACRO computeCardAssignees
+## $task[TaskCode.TaskClass] task to be computed
+##
+## Extract the assignees data to create a list
+#macro(computeCardAssignees $task)
   #set($taskassignee = $task.getProperty('assignee').value)
   #set($taskassignees = [])
   #foreach($a in $taskassignee.split(','))
@@ -788,6 +766,95 @@ icon=icon:calendar_view_month</parameters>
     #set($assignee = $assigneepage.getObject('XWiki.XWikiUsers'))
     #set($discard = $taskassignees.add($assignee))
   #end
+  #displayCardAssignees($taskassignees)
+#end
+################################################
+################ DISPLAY MACROS ################
+################################################
+#### MACRO displayTimelineForTask
+## @task[TaskCode.TaskClass] Task to be computed
+## @taskwidth[float] Size in percent of the parent element of the task block
+## @taskoffset[float] Offset in percent from the left border for the task block
+## @taskstatus[String] Status of the task ('todo', 'inprogress', 'done' or 'late')
+## @taskstarttime[long] Timestamp of the start date of the task
+## @taskenddtime[long] Timestamp of the end date of the task
+##
+## Display a colored bar for one task; there will be also a tooltip on each bar displaying the task as a card
+#macro(displayTimelineForTask $task $taskwidth $taskoffset $taskstatus $taskstarttime $taskenddtime)
+  (% class="task-timeline-task status-${taskstatus}" style="display: block;position: relative;margin: 0.5ex;width: ${taskwidth}%;left: ${taskoffset}%;" %)
+  (((
+    (% class="task-timeline-task-date" %)
+    (((
+      $datetool.whenIs($taskenddtime)
+    )))
+    (% class="task-timeline-task-bar" %)((()))
+    (% class="task-card tooltip status-${taskstatus}" %)
+    (((
+      #computeCardDependencies($task)
+      #computeCardTitle($task)
+      #computeCardAssignees($task)
+    )))
+  )))
+#end
+#### MACRO displayCardDependencies
+## @deptaskslist[Map&lt;String, List&lt;TaskCode.TaskClass&gt;&gt;] List of tasks (TaskCode.TaskClass) ordered by status in a dictionary
+##
+## Display the status of a task dependency
+#macro(displayCardDependencies $deptaskslist)
+  (% class="task-card-subtasks" %)
+  (((
+    #foreach($deptaskslistkey in $deptaskslist.keySet())
+      #foreach($task in $deptaskslist.get($deptaskslistkey))
+        (% class="task-card-subtasks-status status-${deptaskslistkey}" %)
+        (((
+          (% class="tooltip" %)
+          (((
+            [[${task.getProperty('title').value}&gt;&gt;${task.getName()}]]
+            (% class="task-card-duedate" %)
+            (((
+              ${services.localization.render('Tasks.WebHome.due_date_on')} ${task.get('duedate')}
+            )))
+            (% class="task-card-assignees" %)
+            (((
+              #foreach($assignee in $task.getProperty('assignee').value.split(','))
+                (% class="task-card-assignee user-avatar-wrapper" %)
+                (((
+                  #largeUserAvatar($assignee)
+                )))
+              #end
+            )))
+          )))
+        )))
+      #end
+    #end
+  )))
+#end
+#### MACRO displayCardTitle
+## @tasktitle[String] Title of the task
+## @tasklink[String] Link (XWiki Syntax compliant) to access the task
+##
+## Display the title of a task
+#macro(displayCardTitle $tasktitle $tasklink)
+  (% class="task-card-title" %)
+  (((
+    [[${tasktitle}&gt;&gt;${tasklink}]]
+  )))
+#end
+#### MACRO displayCardDueDate
+## @taskduedate[String] due date of the task
+##
+## Display the due date of a task
+#macro(displayCardDueDate $taskduedate)
+  (% class="task-card-duedate" %)
+  (((
+    ${services.localization.render('Tasks.WebHome.due_date_on')} ${taskduedate}
+  )))
+#end
+#### MACRO displayCardAssignees
+## @assignees[List&lt;XWiki.XWikiUsers&gt;] List of assignees
+##
+## Display the assignees of a task
+#macro(displayCardAssignees $assignees)
   (% class="task-card-assignees" %)
   (((
     #foreach($assignee in $taskassignees)
@@ -803,64 +870,67 @@ icon=icon:calendar_view_month</parameters>
     #end
   )))
 #end
-
-{{html wiki="true"}}
-(% class="task-timeline" %)
-(((
-#foreach($taskid in $results)
-  #set($taskpageref = $services.model.resolveDocument($taskid))
-  #set($taskpage = $xwiki.getDocument($taskpageref))
-  #set($task = $taskpage.getObject('TaskCode.TaskClass'))
-  #drawTimeline($task)
-
+#### MACRO displayCardAssignees
+## @taskslist[List&lt;TaskCode.TaskClass&gt;] List of tasks
+##
+## Display the timeline
+#macro(displayTimeline $taskslist)
+  (% class="task-timeline" %)
+  (((
+    #foreach($task in $taskslist)
+      #computeTimelineTask($task)
+    #end
+  )))
 #end
-)))
-(% class="task-list" %)
-(((
-  #set($tasklistlate = [])
-  #set($tasklisttodo = [])
-  #set($tasklistinprogress = [])
-  #set($tasklistdone = [])
+#### MACRO displayCardAssignees
+## @taskslist[Map&lt;String,List&lt;TaskCode.TaskClass&gt;&gt;] List of tasks order by categories
+##
+## Display the tasks with column for each category
+#macro(displayCategories $taskslist)
+  (% class="task-list" %)
+  (((
+    #foreach($taskslistkey in $taskslist.keySet())
+      (% class="task-list-category status-${taskslistkey}" %)
+      (((
+        #foreach($task in $taskslist.get($taskslistkey))
+          (% class="task-card status-${taskslistkey}" %)
+          (((
+            #computeCardDependencies($task)
+            #computeCardTitle($task)
+            #computeCardDueDate($task)
+            #computeCardAssignees($task)
+          )))
+        #end
+      )))
+    #end
+  )))
+#end
+################################################
+################# HTML DISPLAY #################
+################################################
+{{html wiki="true"}}
+#set($query = "from doc.object(TaskCode.TaskClass) as task where doc.fullName &lt;&gt; 'TaskCode.TaskTemplate' order by task.duedate")
+#set($results = $services.query.xwql($query).execute())
+#set($timelinetaskslist = [])
+#set($categoriestaskslist = {'late': []})
+#set($discard = $categoriestaskslist.put('late', []))
+#foreach($s in $xwiki.getPropertyClassFromName('TaskCode.TaskClass_status').getListValues())
+  #set($discard = $categoriestaskslist.put($s, []))
+#end
 #foreach($taskid in $results)
   #set($taskpageref = $services.model.resolveDocument($taskid))
   #set($taskpage = $xwiki.getDocument($taskpageref))
   #set($task = $taskpage.getObject('TaskCode.TaskClass'))
+  #set($discard = $timelinetaskslist.add($task)) ## Fill for the timeline
   #set($taskstatus = $task.getProperty('status').value)
   #set($taskduedate = $task.getProperty('duedate').value)
   #if($taskduedate.before($datetool.date) &amp;&amp; $taskstatus != 'done')
-    #set($discard = $tasklistlate.add($task))
-  #elseif($taskstatus == 'todo')
-    #set($discard = $tasklisttodo.add($task))
-  #elseif($taskstatus == 'inprogress')
-    #set($discard = $tasklistinprogress.add($task))
-  #elseif($taskstatus == 'done')
-    #set($discard = $tasklistdone.add($task))
-  #else
-    {{error}}Invalid task status. Contact the administrator.{{/error}}
+    #set($taskstatus = 'late')
   #end
+  #set($discard = $categoriestaskslist.get($taskstatus).add($task)) ## Fill for the list
 #end
-  #set($tasks = {})
-  #set($discard = $tasks.put('late', $tasklistlate))
-  #set($discard = $tasks.put('todo', $tasklisttodo))
-  #set($discard = $tasks.put('inprogress', $tasklistinprogress))
-  #set($discard = $tasks.put('done', $tasklistdone))
-  #foreach($taskkeylist in $tasks.keySet())
-    (% class="task-list-category status-${taskkeylist}" %)
-    (((
-      #foreach($task in $tasks.get($taskkeylist))
-        #set($classname = "status-${taskkeylist}")
-        (% class="task-card ${classname}" %)
-        (((
-          #cardsStatus($task)
-          #cardsTitle($task)
-          #cardsDueDate($task)
-          #cardsAssignees($task)
-        )))
-      #end
-    )))
-  #end
-
-)))
+#displayTimeline($timelinetaskslist)
+#displayCategories($categoriestaskslist)
 {{/html}}
 
 {{/velocity}}</content>
